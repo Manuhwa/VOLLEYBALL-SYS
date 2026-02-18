@@ -1,0 +1,10 @@
+# Bulldogs Volleyball Club — static site (HTML/CSS/JS, no build)
+# Not a Jekyll site; no build step required.
+
+[build]
+  # Static HTML/CSS/JS — no build step; this just satisfies Netlify
+  command = "echo 'Static site — no build required'"
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "18"
