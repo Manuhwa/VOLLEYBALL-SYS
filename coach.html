@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coach — Bulldogs Volleyball Club</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .page-header { background: linear-gradient(135deg, #2d5016 0%, #4a7c23 40%, #c9a227 70%, #e6b800 100%); color: #1a1a1a; padding: 20px 24px; margin: -32px -32px 24px -32px; border-radius: 12px 12px 0 0; }
+    .page-header h1 { margin: 0; font-size: 1.35rem; }
+    .login-box { max-width: 320px; margin: 24px auto; padding: 24px; border: 1px solid var(--border); border-radius: 8px; }
+    .login-box input { width: 100%; padding: 10px; margin-bottom: 12px; }
+    .login-box button { width: 100%; padding: 12px; }
+    .coach-only { display: none; }
+    .coach-only.visible { display: block; }
+    .sub-row { border-bottom: 1px solid var(--border); padding: 16px 0; }
+    .sub-row .player-name { font-weight: 600; margin-bottom: 8px; }
+    .sub-row textarea { width: 100%; min-height: 60px; padding: 8px; margin-top: 6px; }
+    .sub-row .save-btn { margin-top: 8px; }
+    #logout { margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="page-header">
+      <h1>Bulldogs Volleyball Club — Coach</h1>
+      <p>Add or edit comments for each submission (coach only)</p>
+    </div>
+
+    <div id="login-box" class="login-box">
+      <label>Coach password</label>
+      <input type="password" id="coach-password" placeholder="Enter password">
+      <button type="button" class="btn btn-primary" id="login-btn">Log in</button>
+      <p id="login-err" style="color:#c41e3a;font-size:0.9rem;margin-top:8px;display:none;">Wrong password.</p>
+    </div>
+
+    <div id="coach-only" class="coach-only">
+      <div class="links" style="margin-bottom:16px;">
+        <button type="button" class="btn btn-outline" id="logout">Log out</button>
+        <a href="view.html">View submissions</a>
+        <a href="index.html">Form</a>
+      </div>
+      <div id="loading" class="loading" style="padding:24px;text-align:center;">Loading…</div>
+      <div id="submissions-list"></div>
+    </div>
+  </div>
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      var COACH_PASSWORD = 'bulldogs2025';
+      var VIEW_URL = typeof CONFIG !== 'undefined' && CONFIG.VIEW_URL ? CONFIG.VIEW_URL : '';
+      var SUBMIT_URL = typeof CONFIG !== 'undefined' && CONFIG.SUBMIT_URL ? CONFIG.SUBMIT_URL : '';
+
+      function isCoach() { return sessionStorage.getItem('coach') === '1'; }
+
+      function showCoach() {
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('coach-only').classList.add('visible');
+        loadSubmissions();
+      }
+
+      function hideCoach() {
+        sessionStorage.removeItem('coach');
+        document.getElementById('login-box').style.display = 'block';
+        document.getElementById('coach-only').classList.remove('visible');
+        document.getElementById('coach-password').value = '';
+      }
+
+      if (isCoach()) showCoach();
+
+      document.getElementById('login-btn').onclick = function () {
+        var pwd = document.getElementById('coach-password').value;
+        if (pwd === COACH_PASSWORD) {
+          sessionStorage.setItem('coach', '1');
+          document.getElementById('login-err').style.display = 'none';
+          showCoach();
+        } else {
+          document.getElementById('login-err').style.display = 'block';
+        }
+      };
+
+      document.getElementById('logout').onclick = hideCoach;
+
+      function loadSubmissions() {
+        if (!VIEW_URL) {
+          document.getElementById('loading').innerHTML = 'Set VIEW_URL in config.js.';
+          return;
+        }
+        fetch(VIEW_URL)
+          .then(function (r) { return r.json(); })
+          .then(function (rows) {
+            document.getElementById('loading').style.display = 'none';
+            var list = document.getElementById('submissions-list');
+            if (!rows || rows.length === 0) {
+              list.innerHTML = '<p>No submissions yet.</p>';
+              return;
+            }
+            list.innerHTML = '';
+            rows.forEach(function (row, index) {
+              var div = document.createElement('div');
+              div.className = 'sub-row';
+              var comment = row.coachComment != null ? row.coachComment : '';
+              div.innerHTML =
+                '<div class="player-name">' + escapeHtml(row.playerName || '') + ' — ' + (row.timestamp || '') + '</div>' +
+                '<label>Coach comment (only you can edit)</label>' +
+                '<textarea data-row="' + (row._rowIndex != null ? row._rowIndex : index + 2) + '" placeholder="Add your comment...">' + escapeHtml(comment) + '</textarea>' +
+                '<button type="button" class="btn btn-primary save-btn" data-row="' + (row._rowIndex != null ? row._rowIndex : index + 2) + '">Save comment</button>';
+              list.appendChild(div);
+              div.querySelector('.save-btn').onclick = function () {
+                var rowIndex = this.getAttribute('data-row');
+                var textarea = div.querySelector('textarea');
+                saveComment(parseInt(rowIndex, 10), textarea.value);
+              };
+            });
+          })
+          .catch(function () {
+            document.getElementById('loading').innerHTML = 'Failed to load submissions.';
+          });
+      }
+
+      function saveComment(rowIndex, comment) {
+        if (!SUBMIT_URL) { alert('SUBMIT_URL not set.'); return; }
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = SUBMIT_URL;
+        form.target = 'coach-frame';
+        form.style.display = 'none';
+        var d = document.createElement('input');
+        d.name = 'data';
+        d.value = JSON.stringify({ action: 'comment', rowIndex: rowIndex, comment: comment });
+        form.appendChild(d);
+        var iframe = document.getElementById('coach-frame');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.id = 'coach-frame';
+          iframe.name = 'coach-frame';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+        }
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+        alert('Comment saved.');
+      }
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+    })();
+  </script>
+</body>
+</html>
