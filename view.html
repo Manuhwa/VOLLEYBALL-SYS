@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submissions — Bulldogs Volleyball Club</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .page-header { background: linear-gradient(135deg, #2d5016 0%, #4a7c23 40%, #c9a227 70%, #e6b800 100%); color: #1a1a1a; padding: 20px 24px; margin: -32px -32px 24px -32px; border-radius: 12px 12px 0 0; }
+    .page-header h1 { margin: 0; font-size: 1.35rem; }
+    .page-header p { margin: 6px 0 0; opacity: 0.9; font-size: 0.9rem; }
+    .sub-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .sub-table th, .sub-table td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+    .sub-table th { background: var(--accent); color: white; font-weight: 600; }
+    .sub-table tr:hover { background: rgba(0,0,0,0.03); }
+    .sub-table .rating { text-transform: capitalize; }
+    .loading { text-align: center; padding: 40px; color: var(--text-muted); }
+    .error { color: #c41e3a; padding: 16px; }
+    .links { margin-bottom: 16px; }
+    .links a { margin-right: 12px; color: var(--primary); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="page-header">
+      <h1>Bulldogs Volleyball Club</h1>
+      <p>Player evaluation submissions</p>
+    </div>
+    <div class="links">
+      <a href="index.html">← Back to form</a>
+      <a href="coach.html">Coach login</a>
+    </div>
+    <div id="content">
+      <div class="loading" id="loading">Loading submissions…</div>
+      <div class="error" id="error" style="display:none;"></div>
+      <div id="table-wrap" style="display:none;"></div>
+    </div>
+  </div>
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      var viewUrl = typeof CONFIG !== 'undefined' && CONFIG.VIEW_URL ? CONFIG.VIEW_URL : '';
+      if (!viewUrl) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = 'VIEW_URL is not set in config.js. See SETUP.md.';
+        return;
+      }
+      fetch(viewUrl)
+        .then(function (r) { return r.json(); })
+        .then(function (rows) {
+          document.getElementById('loading').style.display = 'none';
+          if (!rows || rows.length === 0) {
+            document.getElementById('table-wrap').style.display = 'block';
+            document.getElementById('table-wrap').innerHTML = '<p class="loading">No submissions yet.</p>';
+            return;
+          }
+          var headers = ['Submitted', 'Player', 'Birth date', 'Gender', 'Height', 'Hand', 'Position(s)', 'Serve', 'Pass', 'Set', 'Attack', 'Block', 'Defense', 'Attitude', 'Leadership', 'Coachable', 'Coach comment'];
+          var keys = ['timestamp', 'playerName', 'birthdate', 'gender', 'height', 'hand', 'positions', 'serve', 'pass', 'set', 'attack', 'block', 'defense', 'attitude', 'leadership', 'coachable', 'coachComment'];
+          var html = '<table class="sub-table"><thead><tr>';
+          headers.forEach(function (h) { html += '<th>' + h + '</th>'; });
+          html += '</tr></thead><tbody>';
+          rows.forEach(function (row) {
+            html += '<tr>';
+            keys.forEach(function (k) {
+              var val = row[k] != null ? String(row[k]) : '';
+              if (val && k !== 'coachComment' && ['serve','pass','set','attack','block','defense','attitude','leadership','coachable'].indexOf(k) >= 0) val = val.replace(/-/g, ' ');
+              html += '<td class="' + (k === 'coachComment' ? 'comment' : '') + '">' + escapeHtml(val) + '</td>';
+            });
+            html += '</tr>';
+          });
+          html += '</tbody></table>';
+          document.getElementById('table-wrap').innerHTML = html;
+          document.getElementById('table-wrap').style.display = 'block';
+        })
+        .catch(function () {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('error').style.display = 'block';
+          document.getElementById('error').textContent = 'Could not load submissions. Check VIEW_URL and that the Apps Script is deployed.';
+        });
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+    })();
+  </script>
+</body>
+</html>

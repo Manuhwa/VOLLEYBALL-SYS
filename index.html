@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulldogs Volleyball Club — Player Evaluation Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <header class="form-header">
+      <img src="logo.jpg" alt="Bulldogs Volleyball Club" class="header-logo">
+      <div class="header-text">
+        <p class="club-name">Bulldogs Volleyball Club</p>
+        <h1>Player Evaluation Form</h1>
+        <p class="subtitle">Performance & Movement Assessment</p>
+        <p class="header-links"><a href="view.html">View submissions</a></p>
+      </div>
+    </header>
+
+    <form id="evaluation-form">
+      <!-- Player Information -->
+      <section class="section player-info">
+        <h2>Player Information</h2>
+        <div class="form-grid">
+          <div class="field full-width">
+            <label for="playerName">Player Name</label>
+            <input type="text" id="playerName" name="playerName" required placeholder="Enter full name">
+          </div>
+          <div class="field">
+            <label for="birthdate">Birth Date</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+          </div>
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="height">Height</label>
+            <input type="text" id="height" name="height" placeholder="e.g. 5'10&quot; or 178 cm" required>
+          </div>
+          <div class="field">
+            <label for="hand">Hand</label>
+            <select id="hand" name="hand" required>
+              <option value="">Select</option>
+              <option value="right">Right</option>
+              <option value="left">Left</option>
+            </select>
+          </div>
+          <div class="field full-width">
+            <label for="positions">Position(s) Played</label>
+            <input type="text" id="positions" name="positions" placeholder="e.g. Setter, Outside Hitter, Libero" required>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Evaluation -->
+      <section class="section evaluation-table">
+        <h2>Skills Evaluation</h2>
+        <p class="rating-legend">Rate each skill: <strong>Very Poor</strong> · <strong>Poor</strong> · <strong>Fair</strong> · <strong>Good</strong> · <strong>Very Good</strong></p>
+        <div class="table-wrapper">
+          <table class="eval-table">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th>Very Poor</th>
+                <th>Poor</th>
+                <th>Fair</th>
+                <th>Good</th>
+                <th>Very Good</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="skill-name">Serve</td>
+                <td><input type="radio" name="serve" value="very-poor" required></td>
+                <td><input type="radio" name="serve" value="poor"></td>
+                <td><input type="radio" name="serve" value="fair"></td>
+                <td><input type="radio" name="serve" value="good"></td>
+                <td><input type="radio" name="serve" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Pass</td>
+                <td><input type="radio" name="pass" value="very-poor" required></td>
+                <td><input type="radio" name="pass" value="poor"></td>
+                <td><input type="radio" name="pass" value="fair"></td>
+                <td><input type="radio" name="pass" value="good"></td>
+                <td><input type="radio" name="pass" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Set</td>
+                <td><input type="radio" name="set" value="very-poor" required></td>
+                <td><input type="radio" name="set" value="poor"></td>
+                <td><input type="radio" name="set" value="fair"></td>
+                <td><input type="radio" name="set" value="good"></td>
+                <td><input type="radio" name="set" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Attack</td>
+                <td><input type="radio" name="attack" value="very-poor" required></td>
+                <td><input type="radio" name="attack" value="poor"></td>
+                <td><input type="radio" name="attack" value="fair"></td>
+                <td><input type="radio" name="attack" value="good"></td>
+                <td><input type="radio" name="attack" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Block</td>
+                <td><input type="radio" name="block" value="very-poor" required></td>
+                <td><input type="radio" name="block" value="poor"></td>
+                <td><input type="radio" name="block" value="fair"></td>
+                <td><input type="radio" name="block" value="good"></td>
+                <td><input type="radio" name="block" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Defense</td>
+                <td><input type="radio" name="defense" value="very-poor" required></td>
+                <td><input type="radio" name="defense" value="poor"></td>
+                <td><input type="radio" name="defense" value="fair"></td>
+                <td><input type="radio" name="defense" value="good"></td>
+                <td><input type="radio" name="defense" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Attitude</td>
+                <td><input type="radio" name="attitude" value="very-poor" required></td>
+                <td><input type="radio" name="attitude" value="poor"></td>
+                <td><input type="radio" name="attitude" value="fair"></td>
+                <td><input type="radio" name="attitude" value="good"></td>
+                <td><input type="radio" name="attitude" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Leadership</td>
+                <td><input type="radio" name="leadership" value="very-poor" required></td>
+                <td><input type="radio" name="leadership" value="poor"></td>
+                <td><input type="radio" name="leadership" value="fair"></td>
+                <td><input type="radio" name="leadership" value="good"></td>
+                <td><input type="radio" name="leadership" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Coachable</td>
+                <td><input type="radio" name="coachable" value="very-poor" required></td>
+                <td><input type="radio" name="coachable" value="poor"></td>
+                <td><input type="radio" name="coachable" value="fair"></td>
+                <td><input type="radio" name="coachable" value="good"></td>
+                <td><input type="radio" name="coachable" value="very-good"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Movement Category -->
+      <section class="section movement-category">
+        <h2>Movement Category</h2>
+        <p class="rating-legend">Rate each movement: <strong>Very Poor</strong> · <strong>Poor</strong> · <strong>Fair</strong> · <strong>Good</strong> · <strong>Very Good</strong></p>
+        <div class="table-wrapper">
+          <table class="eval-table">
+            <thead>
+              <tr>
+                <th>Movement</th>
+                <th>Very Poor</th>
+                <th>Poor</th>
+                <th>Fair</th>
+                <th>Good</th>
+                <th>Very Good</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="skill-name">Sides</td>
+                <td><input type="radio" name="sides" value="very-poor" required></td>
+                <td><input type="radio" name="sides" value="poor"></td>
+                <td><input type="radio" name="sides" value="fair"></td>
+                <td><input type="radio" name="sides" value="good"></td>
+                <td><input type="radio" name="sides" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Forward</td>
+                <td><input type="radio" name="forward" value="very-poor" required></td>
+                <td><input type="radio" name="forward" value="poor"></td>
+                <td><input type="radio" name="forward" value="fair"></td>
+                <td><input type="radio" name="forward" value="good"></td>
+                <td><input type="radio" name="forward" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Backward</td>
+                <td><input type="radio" name="backward" value="very-poor" required></td>
+                <td><input type="radio" name="backward" value="poor"></td>
+                <td><input type="radio" name="backward" value="fair"></td>
+                <td><input type="radio" name="backward" value="good"></td>
+                <td><input type="radio" name="backward" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Shuffle</td>
+                <td><input type="radio" name="shuffle" value="very-poor" required></td>
+                <td><input type="radio" name="shuffle" value="poor"></td>
+                <td><input type="radio" name="shuffle" value="fair"></td>
+                <td><input type="radio" name="shuffle" value="good"></td>
+                <td><input type="radio" name="shuffle" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Crossover</td>
+                <td><input type="radio" name="crossover" value="very-poor" required></td>
+                <td><input type="radio" name="crossover" value="poor"></td>
+                <td><input type="radio" name="crossover" value="fair"></td>
+                <td><input type="radio" name="crossover" value="good"></td>
+                <td><input type="radio" name="crossover" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Spiking Approach</td>
+                <td><input type="radio" name="spiking-approach" value="very-poor" required></td>
+                <td><input type="radio" name="spiking-approach" value="poor"></td>
+                <td><input type="radio" name="spiking-approach" value="fair"></td>
+                <td><input type="radio" name="spiking-approach" value="good"></td>
+                <td><input type="radio" name="spiking-approach" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Reaction</td>
+                <td><input type="radio" name="reaction" value="very-poor" required></td>
+                <td><input type="radio" name="reaction" value="poor"></td>
+                <td><input type="radio" name="reaction" value="fair"></td>
+                <td><input type="radio" name="reaction" value="good"></td>
+                <td><input type="radio" name="reaction" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Retract</td>
+                <td><input type="radio" name="retract" value="very-poor" required></td>
+                <td><input type="radio" name="retract" value="poor"></td>
+                <td><input type="radio" name="retract" value="fair"></td>
+                <td><input type="radio" name="retract" value="good"></td>
+                <td><input type="radio" name="retract" value="very-good"></td>
+              </tr>
+              <tr>
+                <td class="skill-name">Transition</td>
+                <td><input type="radio" name="transition" value="very-poor" required></td>
+                <td><input type="radio" name="transition" value="poor"></td>
+                <td><input type="radio" name="transition" value="fair"></td>
+                <td><input type="radio" name="transition" value="good"></td>
+                <td><input type="radio" name="transition" value="very-good"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Submit Evaluation</button>
+        <button type="button" class="btn btn-whatsapp" id="share-whatsapp" title="Share form link via WhatsApp">Share on WhatsApp</button>
+        <button type="button" class="btn btn-outline" onclick="window.print()">Print Form</button>
+        <button type="reset" class="btn btn-outline">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
